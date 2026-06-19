@@ -1,6 +1,6 @@
 /**
  * PropSpace Database Seed Script
- * Registers a demo user and inserts 12 sample property listings.
+ * Registers a demo user and inserts 30 sample property listings.
  * Run with: node seed.js
  */
 const http = require('http');
@@ -56,147 +56,65 @@ const DEMO_USER = {
 
 // ─── Sample Properties ────────────────────────────────────────────────────────
 
-const PROPERTIES = [
-  {
-    title: 'Skyline Glass Penthouse',
-    description:
-      'Breathtaking 360° city views from this ultra-modern penthouse. Floor-to-ceiling glass panels, a private rooftop terrace, chef kitchen, and smart-home integration throughout.',
-    price: 8500,
-    location: { city: 'New York', country: 'USA' },
-    propertyType: 'Apartment',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Beverly Hills Luxury Villa',
-    description:
-      'Sprawling 6-bedroom villa nestled in the hills with a heated infinity pool, home theatre, wine cellar, and manicured garden. Hollywood at your doorstep.',
-    price: 15000,
-    location: { city: 'Los Angeles', country: 'USA' },
-    propertyType: 'House',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-      'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Cozy Shoreditch Studio',
-    description:
-      'Stylish compact studio in the heart of East London\'s creative quarter. Industrial-chic interiors, exposed brick, high-speed fiber, and steps from top restaurants and galleries.',
-    price: 1800,
-    location: { city: 'London', country: 'UK' },
-    propertyType: 'Studio',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Parisian Haussmann Apartment',
-    description:
-      'Classic 3-bedroom Haussmann apartment on the 4th floor with original parquet floors, ornate mouldings, a charming Juliet balcony, and views over a leafy boulevard.',
-    price: 4200,
-    location: { city: 'Paris', country: 'France' },
-    propertyType: 'Apartment',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=800&q=80',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Marina Bay Studio Retreat',
-    description:
-      'Sleek studio with direct waterfront views of Marina Bay Sands. Fully furnished, automated blinds, and access to a rooftop infinity pool and sky gym.',
-    price: 3100,
-    location: { city: 'Singapore', country: 'Singapore' },
-    propertyType: 'Studio',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Beachfront Malibu Bungalow',
-    description:
-      'Wake up to the sound of waves in this iconic 3-bedroom beachfront bungalow. Wrap-around deck, outdoor shower, fire pit, and private beach access. Perfect coastal retreat.',
-    price: 9800,
-    location: { city: 'Malibu', country: 'USA' },
-    propertyType: 'House',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Tokyo Minimalist Apartment',
-    description:
-      'Zen-inspired 2-bedroom apartment in Shibuya with tatami rooms, bespoke Japanese joinery, a deep soaking bath, and panoramic city vistas from the 32nd floor.',
-    price: 3600,
-    location: { city: 'Tokyo', country: 'Japan' },
-    propertyType: 'Apartment',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Dubai Marina Skyscraper Suite',
-    description:
-      'Ultra-luxury 4-bedroom sky suite on the 58th floor of a signature Dubai Marina tower. Private pool terrace, butler service, and breathtaking sea and skyline views.',
-    price: 18000,
-    location: { city: 'Dubai', country: 'UAE' },
-    propertyType: 'Apartment',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&q=80',
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Barcelona Gothic Quarter Loft',
-    description:
-      'Spacious artist\'s loft in the heart of El G\u00f2tic, just meters from the Cathedral. Exposed stone walls, 5-metre ceilings, a mezzanine bedroom, and a private patio.',
-    price: 2400,
-    location: { city: 'Barcelona', country: 'Spain' },
-    propertyType: 'Studio',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Sydney Harbour View House',
-    description:
-      'Stunning 4-bedroom Federation house with direct Harbour Bridge views. Original heritage features blended with contemporary extensions, sunny courtyard, and garage.',
-    price: 7200,
-    location: { city: 'Sydney', country: 'Australia' },
-    propertyType: 'House',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80',
-      'https://images.unsplash.com/photo-1605146769289-440113cc3d00?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Berlin Mitte Modern Studio',
-    description:
-      'Sophisticated studio in Berlin-Mitte with polished concrete floors, designer furniture, and access to a communal rooftop garden. Walking distance to Museum Island.',
-    price: 1350,
-    location: { city: 'Berlin', country: 'Germany' },
-    propertyType: 'Studio',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80',
-    ],
-  },
-  {
-    title: 'Santorini Cliffside Villa',
-    description:
-      'Iconic whitewashed 3-bedroom villa carved into the Oia caldera cliffs with a private infinity pool, world-famous sunset views, and traditional cave architecture.',
-    price: 11000,
-    location: { city: 'Santorini', country: 'Greece' },
-    propertyType: 'House',
-    imageUrls: [
-      'https://images.unsplash.com/photo-1601295452898-23b21cc0b5f8?w=800&q=80',
-      'https://images.unsplash.com/photo-1548625361-58a9b86aa83b?w=800&q=80',
-    ],
-  },
+const IMAGE_LIBRARY = [
+  'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
+  'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
+  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80',
+  'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=800&q=80',
+  'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+  'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&q=80',
+  'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=800&q=80',
+  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80',
+  'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80',
+  'https://images.unsplash.com/photo-1601295452898-23b21cc0b5f8?w=800&q=80',
+  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+  'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=800&q=80',
+  'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
 ];
+
+const PROPERTY_TEMPLATES = [
+  { title: 'Skyline Glass Penthouse', city: 'New York', country: 'USA', type: 'Apartment', price: 8500, description: 'Breathtaking 360° city views, floor-to-ceiling glass, private rooftop terrace, chef kitchen, and smart-home integration.' },
+  { title: 'Beverly Hills Luxury Villa', city: 'Los Angeles', country: 'USA', type: 'House', price: 15000, description: 'Sprawling 6-bedroom villa with heated infinity pool, home theatre, wine cellar, and a manicured garden.' },
+  { title: 'Cozy Shoreditch Studio', city: 'London', country: 'UK', type: 'Studio', price: 1800, description: 'Industrial-chic studio in East London with exposed brick, fast fiber, and steps from restaurants and galleries.' },
+  { title: 'Parisian Haussmann Apartment', city: 'Paris', country: 'France', type: 'Apartment', price: 4200, description: 'Classic 3-bedroom Haussmann apartment with parquet floors, ornate mouldings, and a charming Juliet balcony.' },
+  { title: 'Marina Bay Studio Retreat', city: 'Singapore', country: 'Singapore', type: 'Studio', price: 3100, description: 'Sleek waterfront studio with automated blinds, skyline views, and access to a rooftop infinity pool.' },
+  { title: 'Beachfront Malibu Bungalow', city: 'Malibu', country: 'USA', type: 'House', price: 9800, description: 'Three-bedroom beachfront bungalow with wrap-around deck, outdoor shower, fire pit, and private beach access.' },
+  { title: 'Tokyo Minimalist Apartment', city: 'Tokyo', country: 'Japan', type: 'Apartment', price: 3600, description: 'Zen-inspired apartment in Shibuya with tatami rooms, bespoke joinery, and panoramic city vistas.' },
+  { title: 'Dubai Marina Skyscraper Suite', city: 'Dubai', country: 'UAE', type: 'Apartment', price: 18000, description: 'Ultra-luxury sky suite with private pool terrace, butler service, and breathtaking sea and skyline views.' },
+  { title: 'Barcelona Gothic Quarter Loft', city: 'Barcelona', country: 'Spain', type: 'Studio', price: 2400, description: 'Artist loft with exposed stone walls, high ceilings, mezzanine bedroom, and a private patio.' },
+  { title: 'Sydney Harbour View House', city: 'Sydney', country: 'Australia', type: 'House', price: 7200, description: 'Federation house with Harbour Bridge views, heritage features, sunny courtyard, and a garage.' },
+  { title: 'Berlin Mitte Modern Studio', city: 'Berlin', country: 'Germany', type: 'Studio', price: 1350, description: 'Sophisticated studio with polished concrete floors, designer furniture, and a rooftop garden.' },
+  { title: 'Santorini Cliffside Villa', city: 'Santorini', country: 'Greece', type: 'House', price: 11000, description: 'Whitewashed cliffside villa with a private infinity pool, sunset views, and cave-style architecture.' },
+  { title: 'Miami Bayfront Residence', city: 'Miami', country: 'USA', type: 'House', price: 9200, description: 'Bayfront residence with a private dock, airy interiors, and sunset-facing outdoor lounges.' },
+  { title: 'Amsterdam Canal-View Flat', city: 'Amsterdam', country: 'Netherlands', type: 'Apartment', price: 3900, description: 'Elegant canal-side flat with tall windows, warm oak finishes, and a quiet study nook.' },
+  { title: 'Vancouver Rainforest Retreat', city: 'Vancouver', country: 'Canada', type: 'House', price: 6400, description: 'Modern retreat framed by forest views, with a spa bathroom, cedar deck, and fireplace.' },
+  { title: 'Seoul Skyline Micro Loft', city: 'Seoul', country: 'South Korea', type: 'Studio', price: 2100, description: 'Compact loft with smart storage, ambient lighting, and striking skyline views from the upper floors.' },
+  { title: 'Cape Town Oceanfront Villa', city: 'Cape Town', country: 'South Africa', type: 'House', price: 7800, description: 'Oceanfront villa with panoramic Atlantic views, open-plan living, and a sunset terrace.' },
+  { title: 'Lisbon Alfama Artist Apartment', city: 'Lisbon', country: 'Portugal', type: 'Apartment', price: 2600, description: 'Bright artist apartment in Alfama with tiled accents, a reading balcony, and cobblestone charm.' },
+  { title: 'Toronto Downtown Executive Suite', city: 'Toronto', country: 'Canada', type: 'Apartment', price: 4500, description: 'Executive suite in the downtown core with concierge service, skyline views, and modern finishes.' },
+  { title: 'Rome Trastevere Terrace Home', city: 'Rome', country: 'Italy', type: 'House', price: 5300, description: 'Terrace home with warm stone interiors, leafy courtyard access, and historic neighbourhood charm.' },
+  { title: 'Austin Tech District Studio', city: 'Austin', country: 'USA', type: 'Studio', price: 1700, description: 'Clean, modern studio steps from the tech district with coworking access and bright natural light.' },
+  { title: 'Chicago Riverfront Loft', city: 'Chicago', country: 'USA', type: 'Apartment', price: 4700, description: 'Loft with exposed beams, river views, and a polished living space near the city center.' },
+  { title: 'Singapore Orchard Road Residence', city: 'Singapore', country: 'Singapore', type: 'Apartment', price: 6100, description: 'Premium residence near Orchard Road with curated interiors, lap pool access, and city convenience.' },
+  { title: 'Istanbul Bosphorus Panorama Villa', city: 'Istanbul', country: 'Turkey', type: 'House', price: 8600, description: 'Panorama villa overlooking the Bosphorus, featuring wide terraces and classic architectural details.' },
+  { title: 'Copenhagen Nordic Courtyard Flat', city: 'Copenhagen', country: 'Denmark', type: 'Apartment', price: 4800, description: 'Nordic flat with pale timber finishes, courtyard light, and a calm minimalist layout.' },
+  { title: 'Auckland Harbour House', city: 'Auckland', country: 'New Zealand', type: 'House', price: 6900, description: 'Harbour-facing home with a broad deck, sea breezes, and open living spaces for entertaining.' },
+  { title: 'Edinburgh Royal Mile Studio', city: 'Edinburgh', country: 'Scotland', type: 'Studio', price: 1900, description: 'Character-rich studio with stone textures, a loft bed, and central access to the Royal Mile.' },
+  { title: 'Mexico City Polanco Penthouse', city: 'Mexico City', country: 'Mexico', type: 'Apartment', price: 5200, description: 'Polanco penthouse with a wide terrace, curated art walls, and elegant entertaining areas.' },
+  { title: 'Rio Copacabana Beach Apartment', city: 'Rio de Janeiro', country: 'Brazil', type: 'Apartment', price: 3400, description: 'Beach apartment with balcony views of Copacabana, breezy interiors, and easy shoreline access.' },
+  { title: 'Prague Old Town Heritage Loft', city: 'Prague', country: 'Czech Republic', type: 'Studio', price: 2800, description: 'Heritage loft with timber beams, warm lighting, and walking distance to Old Town Square.' },
+];
+
+const PROPERTIES = PROPERTY_TEMPLATES.map((property, index) => ({
+  title: property.title,
+  description: property.description,
+  price: property.price,
+  location: { city: property.city, country: property.country },
+  propertyType: property.type,
+  imageUrls: [IMAGE_LIBRARY[index % IMAGE_LIBRARY.length]],
+}));
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 

@@ -14,11 +14,16 @@ const Navbar = () => {
   // On the home page the hero is dark so navbar starts transparent/dark.
   // Everywhere else (white pages) it starts solid white immediately.
   const isHome = location.pathname === '/';
+  const isDashboard = location.pathname === '/dashboard';
 
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 60 });
 
   // Transparent over hero, solid white once scrolled (or on non-home pages)
   const elevated = !isHome || trigger;
+
+  if (isDashboard) {
+    return null;
+  }
 
   const handleLogout = () => {
     logout();
@@ -115,6 +120,8 @@ const Navbar = () => {
                   </Typography>
                 </Box>
                 <Avatar
+                  component={RouterLink}
+                  to="/profile"
                   src={user.avatar || ''}
                   alt={user.username}
                   sx={{
@@ -124,6 +131,8 @@ const Navbar = () => {
                     background: 'linear-gradient(135deg,#7c4dff,#00b8d9)',
                     fontSize: '1rem',
                     fontWeight: 700,
+                    textDecoration: 'none',
+                    cursor: 'pointer',
                   }}
                 >
                   {user.username.charAt(0).toUpperCase()}

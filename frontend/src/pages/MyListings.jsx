@@ -15,13 +15,24 @@ import {
   InputLabel,
   Select,
   Snackbar,
+  Chip,
+  Stack,
 } from '@mui/material';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import PropertyCard from '../components/PropertyCard';
 import InputField from '../components/InputField';
 import { LoadingState, EmptyState, ErrorState } from '../components/States';
-import { AddHomeWork as AddHomeWorkIcon } from '@mui/icons-material';
+import { AddHomeWork as AddHomeWorkIcon, CloudUpload as CloudUploadIcon } from '@mui/icons-material';
+import { colors, gradients } from '../themeTokens';
+
+const readFileAsDataURL = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Unable to read the selected image file.'));
+    reader.readAsDataURL(file);
+  });
 
 const MyListings = () => {
   const { user } = useContext(AuthContext);
@@ -40,7 +51,8 @@ const MyListings = () => {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [propertyType, setPropertyType] = useState('Apartment');
-  const [imageUrlsString, setImageUrlsString] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
+  const [imageNames, setImageNames] = useState([]);
 
   // UI Feedback
   const [formError, setFormError] = useState('');
@@ -75,7 +87,8 @@ const MyListings = () => {
     setCity('');
     setCountry('');
     setPropertyType('Apartment');
-    setImageUrlsString('');
+    setImageUrls([]);
+    setImageNames([]);
     setFormError('');
     setDialogOpen(true);
   };
@@ -88,9 +101,30 @@ const MyListings = () => {
     setCity(property.location.city);
     setCountry(property.location.country);
     setPropertyType(property.propertyType);
-    setImageUrlsString(property.imageUrls ? property.imageUrls.join(', ') : '');
+    setImageUrls(property.imageUrls || []);
+    setImageNames((property.imageUrls || []).map((_, index) => `Current image ${index + 1}`));
     setFormError('');
     setDialogOpen(true);
+  };
+
+  const handleImageUpload = async (event) => {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+
+    const invalidFile = files.find((file) => !file.type.startsWith('image/'));
+    if (invalidFile) {
+      setFormError('Please select image files only for the property listing.');
+      return;
+    }
+
+    setFormError('');
+    try {
+      const uploadedImages = await Promise.all(files.map((file) => readFileAsDataURL(file)));
+      setImageUrls(uploadedImages.map(String));
+      setImageNames(files.map((file) => file.name));
+    } catch (uploadError) {
+      setFormError(uploadError instanceof Error ? uploadError.message : 'Unable to upload listing images.');
+    }
   };
 
   const handleFormSubmit = async (e) => {
@@ -109,12 +143,6 @@ const MyListings = () => {
       return;
     }
 
-    // Split image URLs by comma and trim whitespace
-    const urls = imageUrlsString
-      .split(',')
-      .map((url) => url.trim())
-      .filter((url) => url.length > 0);
-
     const payload = {
       title: title.trim(),
       description: description.trim(),
@@ -124,7 +152,7 @@ const MyListings = () => {
         country: country.trim(),
       },
       propertyType,
-      imageUrls: urls,
+      imageUrls,
     };
 
     setSubmitting(true);
@@ -167,8 +195,8 @@ const MyListings = () => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 6 }}>
-      {/* Header and Floating controls */}
+    <Box sx={{ py: { xs: 5, md: 7 }, background: gradients.page }}>
+      <Container maxWidth="xl">
       <Box
         sx={{
           display: 'flex',
@@ -184,8 +212,8 @@ const MyListings = () => {
             variant="h4"
             component="h1"
             sx={{
-              fontWeight: 800,
-              background: 'linear-gradient(45deg, #7c4dff 30%, #00e5ff 90%)',
+              fontWeight: 900,
+              background: gradients.accent,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               mb: 1,
@@ -193,7 +221,7 @@ const MyListings = () => {
           >
             My Listing Portfolio
           </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+          <Typography variant="body1" sx={{ color: colors.textMuted }}>
             Manage, update, and remove your registered listings.
           </Typography>
         </Box>
@@ -319,14 +347,43 @@ const MyListings = () => {
               </Grid>
             </Grid>
 
-            <InputField
-              label="Image URLs (Comma separated)"
-              value={imageUrlsString}
-              onChange={(e) => setImageUrlsString(e.target.value)}
-              placeholder="e.g. https://image1.com, https://image2.com"
-              helperText="Separate multiple URLs with commas"
-              disabled={submitting}
-            />
+            <Box
+              sx={{
+                mt: 1,
+                mb: 1,
+                p: 2,
+                borderRadius: 3,
+                border: `1px dashed ${colors.border}`,
+                background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
+              }}
+            >
+              <Typography variant="body2" sx={{ fontWeight: 700, color: colors.text, mb: 1 }}>
+                Property Images
+              </Typography>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', sm: 'center' }}>
+                <Button
+                  component="label"
+                  variant="outlined"
+                  startIcon={<CloudUploadIcon />}
+                  disabled={submitting}
+                  sx={{ whiteSpace: 'nowrap', alignSelf: 'flex-start' }}
+                >
+                  Choose from device
+                  <input hidden type="file" accept="image/*" multiple onChange={handleImageUpload} />
+                </Button>
+                <Typography variant="body2" sx={{ color: colors.textMuted }}>
+                  {imageNames.length > 0 ? `${imageNames.length} image(s) selected` : 'No image selected yet'}
+                </Typography>
+              </Stack>
+
+              {imageNames.length > 0 && (
+                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 2 }}>
+                  {imageNames.map((name) => (
+                    <Chip key={name} label={name} size="small" sx={{ bgcolor: colors.accentBg, color: colors.accentText, fontWeight: 700 }} />
+                  ))}
+                </Stack>
+              )}
+            </Box>
           </DialogContent>
           <DialogActions sx={{ p: 3, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
             <Button onClick={() => setDialogOpen(false)} disabled={submitting} color="inherit">
@@ -346,7 +403,8 @@ const MyListings = () => {
         onClose={() => setSnackbarOpen(false)}
         message={snackbarMessage}
       />
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

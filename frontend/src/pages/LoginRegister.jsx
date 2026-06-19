@@ -4,6 +4,7 @@ import { Box, Typography, Button, Tabs, Tab, Alert, Container, CircularProgress 
 import { AuthContext } from '../context/AuthContext';
 import GlassContainer from '../components/GlassContainer';
 import InputField from '../components/InputField';
+import { gradients } from '../themeTokens';
 
 const LoginRegister = () => {
   const { user, login, register } = useContext(AuthContext);
@@ -119,8 +120,20 @@ const LoginRegister = () => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ py: 8, display: 'flex', flexDirection: 'column', minHeight: '80vh', justifyContent: 'center' }}>
-      <Typography variant="h4" align="center" sx={{ mb: 4, fontWeight: 900, letterSpacing: '.1rem' }}>
+    <Box sx={{ py: { xs: 5, md: 7 }, background: gradients.page }}>
+      <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', minHeight: '80vh', justifyContent: 'center' }}>
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{
+          mb: 4,
+          fontWeight: 900,
+          letterSpacing: '.1rem',
+          background: gradients.accent,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
         PROPSPACE
       </Typography>
 
@@ -242,7 +255,8 @@ const LoginRegister = () => {
           </Box>
         )}
       </GlassContainer>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Card, CardMedia, CardContent, Typography, Box, Chip, IconButton,
 } from '@mui/material';
@@ -9,7 +10,7 @@ import {
   AccountCircle as AccountCircleIcon,
 } from '@mui/icons-material';
 
-const PropertyCard = ({ property, currentUserId, onEdit, onDelete, lightMode = false }) => {
+const PropertyCard = ({ property, currentUserId, onEdit, onDelete, lightMode = true }) => {
   const { _id, title, description, price, location, propertyType, imageUrls, owner } = property;
   const isOwner =
     currentUserId && owner && (owner._id === currentUserId || owner === currentUserId);
@@ -30,8 +31,13 @@ const PropertyCard = ({ property, currentUserId, onEdit, onDelete, lightMode = f
 
   return (
     <Card
+      component={RouterLink}
+      to={`/properties/${_id}`}
       elevation={lightMode ? 0 : 4}
       sx={{
+        textDecoration: 'none',
+        color: 'inherit',
+        cursor: 'pointer',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -68,7 +74,11 @@ const PropertyCard = ({ property, currentUserId, onEdit, onDelete, lightMode = f
         <Box sx={{ position: 'absolute', top: 12, right: 12, zIndex: 2, display: 'flex', gap: 1 }}>
           <IconButton
             size="small"
-            onClick={() => onEdit(property)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onEdit(property);
+            }}
             sx={{
               background: 'rgba(0,0,0,0.45)', color: '#38bdf8',
               backdropFilter: 'blur(8px)',
@@ -79,7 +89,11 @@ const PropertyCard = ({ property, currentUserId, onEdit, onDelete, lightMode = f
           </IconButton>
           <IconButton
             size="small"
-            onClick={() => onDelete(_id)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onDelete(_id);
+            }}
             sx={{
               background: 'rgba(0,0,0,0.45)', color: '#f87171',
               backdropFilter: 'blur(8px)',

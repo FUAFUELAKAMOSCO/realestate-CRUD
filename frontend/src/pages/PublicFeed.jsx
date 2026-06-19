@@ -311,7 +311,7 @@ const ListingsSection = ({ listingsRef }) => {
             ) : (
               <Grid container spacing={3}>
                 {properties.map((property) => (
-                  <Grid item xs={12} sm={6} xl={4} key={property._id}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={property._id}>
                     <PropertyCard
                       property={property}
                       currentUserId={user?._id}

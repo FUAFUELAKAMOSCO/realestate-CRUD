@@ -1,29 +1,36 @@
 import React from 'react';
 import { TextField } from '@mui/material';
+import { colors } from '../themeTokens';
 
-const InputField = ({ label, sx = {}, ...props }) => {
+const InputField = ({ label, sx = {}, mode = 'light', ...props }) => {
+  const isLight = mode === 'light';
+
   return (
     <TextField
       fullWidth
       label={label}
       variant="outlined"
       InputLabelProps={{
-        style: { color: '#9ca3af' },
+        style: { color: isLight ? colors.textMuted : '#9ca3af' },
       }}
       sx={{
         mb: 2,
         '& .MuiOutlinedInput-root': {
           '& fieldset': {
-            borderColor: 'rgba(255, 255, 255, 0.12)',
+            borderColor: isLight ? colors.border : 'rgba(255, 255, 255, 0.12)',
           },
           '&:hover fieldset': {
-            borderColor: 'rgba(255, 255, 255, 0.25)',
+            borderColor: isLight ? 'rgba(124,77,255,0.35)' : 'rgba(255, 255, 255, 0.25)',
           },
           '&.Mui-focused fieldset': {
-            borderColor: 'primary.main',
+            borderColor: colors.primary,
           },
-          color: '#f3f4f6',
+          color: isLight ? colors.text : '#f3f4f6',
+          background: isLight ? colors.surface : 'transparent',
+          borderRadius: 2,
         },
+        '& .MuiInputBase-input': { color: isLight ? colors.text : '#f3f4f6' },
+        '& .MuiInputBase-input::placeholder': { color: isLight ? colors.textSubtle : '#9ca3af', opacity: 1 },
         ...sx,
       }}
       {...props}

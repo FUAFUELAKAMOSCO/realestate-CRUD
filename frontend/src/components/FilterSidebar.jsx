@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { FilterAltOff as FilterAltOffIcon } from '@mui/icons-material';
 
-const FilterSidebar = ({ filters, onChange, onClear, lightMode = false }) => {
+const FilterSidebar = ({ filters, onChange, onClear, lightMode = true }) => {
   const labelColor = lightMode ? '#6b7280' : '#9ca3af';
   const inputBg    = lightMode ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)';
   const borderCol  = lightMode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.12)';
